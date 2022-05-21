@@ -1,9 +1,5 @@
 const links = [
   {
-    "link": "/about",
-    "label": "Features"
-  },
-  {
     "link": "/pricing",
     "label": "Pricing"
   },

@@ -2,7 +2,7 @@ import { Container } from "@mantine/core";
 import { LayoutProps } from "@pankod/refine-core";
 import React from "react";
 import Header from "../Header/Header";
-import links from "../Logo/data";
+import links from "./data";
 
 type layoutProps = LayoutProps & { children: React.ReactNode };
 
