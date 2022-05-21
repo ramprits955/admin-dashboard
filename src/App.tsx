@@ -3,15 +3,17 @@ import routerProvider, {
   HashRouterComponent,
 } from "@pankod/refine-react-router-v6";
 import dataProvider from "@pankod/refine-simple-rest";
+import { Layout } from "./components";
 import { Common } from "./constants/common";
 import Login from "./pages/auth/Login";
 import Home from "./pages/Home";
-import { axiosInstance } from "./utils/api";
+import { axiosInstance } from "./utils/agent";
 import { authProvider } from "./utils/authProvider";
 
 function App() {
   return (
     <Refine
+      Layout={Layout as any}
       routerProvider={{
         ...routerProvider,
         RouterComponent: HashRouterComponent,

@@ -35,11 +35,18 @@ const Account = {
     forgotPassword: (email: string) => requests.post<User>('/api/v1/db/auth/password/forgot', { email }),
     passwordChange: (changePassword: ChangePassword) => requests.post<User>('/api/v1/db/auth/password/change', changePassword),
     verifyEmail: (token: string) =>
-        requests.post<void>(`http://localhost:8080/api/v1/db/auth/email/validate/${token}`, {}),
+        requests.post<void>(`/api/v1/db/auth/email/validate/${token}`, {}),
     resendEmailConfirm: (email: string) =>
         requests.get(`/account/resendEmailConfirmationLink?email=${email}`)
 }
 
-export default {
-    Account
+const Attachment = {
+    upload: (files: Blob) => requests.post('/api/v1/db/storage/upload', {}),
 }
+
+
+
+const agent = {
+    Account, Attachment
+}
+export default agent
