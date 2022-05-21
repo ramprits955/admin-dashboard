@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { User, LoginForm, RegisterForm, ChangePassword } from '../model/user';
 import { Common } from '../constants/common';
-import { User, UserLoginForm, UserRegisterLoginForm, ChangePassword } from '../model/user';
 
 
 export const axiosInstance = axios.create({ baseURL: Common.API_URL });
@@ -21,16 +21,16 @@ axiosInstance.interceptors.request.use((request: AxiosRequestConfig) => {
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const requests = {
-    get: <T>(url: string) => axios.get<T>(url).then(responseBody),
-    post: <T>(url: string, body: {}) => axios.post<T>(url, body).then(responseBody),
-    put: <T>(url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
-    del: <T>(url: string) => axios.delete<T>(url).then(responseBody),
+    get: <T>(url: string) => axiosInstance.get<T>(url).then(responseBody),
+    post: <T>(url: string, body: {}) => axiosInstance.post<T>(url, body).then(responseBody),
+    put: <T>(url: string, body: {}) => axiosInstance.put<T>(url, body).then(responseBody),
+    del: <T>(url: string) => axiosInstance.delete<T>(url).then(responseBody),
 }
 
 const Account = {
     current: () => requests.get<User>('/api/v1/db/auth/user/me'),
-    login: (user: UserLoginForm) => requests.post<User>('/api/v1/db/auth/user/signin', user),
-    register: (user: UserRegisterLoginForm) => requests.post<User>('/api/v1/db/auth/user/signup', user),
+    login: (user: LoginForm) => requests.post<{ token: string }>('/api/v1/db/auth/user/signin', user),
+    register: (user: RegisterForm) => requests.post<User>('/api/v1/db/auth/user/signup', user),
     refreshToken: () => requests.post<User>('/api/v1/db/auth/token/refresh', {}),
     forgotPassword: (email: string) => requests.post<User>('/api/v1/db/auth/password/forgot', { email }),
     passwordChange: (changePassword: ChangePassword) => requests.post<User>('/api/v1/db/auth/password/change', changePassword),

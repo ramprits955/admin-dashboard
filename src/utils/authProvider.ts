@@ -2,24 +2,19 @@ import { AuthProvider } from "@pankod/refine-core";
 
 import axios, { AxiosInstance } from "axios";
 import { Common } from "../constants/common";
+import agent from "./agent";
 
 export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => {
     return {
         login: async ({
-            user,
-        }: {
-            user: { email: string; password: string };
+            email, password
         }) => {
             try {
-                const { data } = await axios.post(`${Common.API_URL}/users/login`, {
-                    user,
-                });
-
-                localStorage.setItem(Common.TOKEN_KEY, data.user.token);
+                const user = await agent.Account.login({ email, password });
+                localStorage.setItem(Common.TOKEN_KEY, user?.token);
             } catch (error) {
                 return Promise.reject(error);
             }
-
             return Promise.resolve("/");
         },
         logout: (props) => {
@@ -28,7 +23,7 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => {
         },
         checkError: (error) => {
             if (error?.response?.status === 401) {
-                return Promise.reject("/register");
+                return Promise.reject("/login");
             }
             return Promise.resolve();
         },

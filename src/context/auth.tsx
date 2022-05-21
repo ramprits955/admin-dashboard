@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import agent from "../utils/agent";
 
 type User = {
   first_name: string;
@@ -20,7 +21,12 @@ interface AuthContextType {
   loading: boolean;
   error?: any;
   login: (email: string, password: string) => void;
-  signUp: (email: string, name: string, password: string) => void;
+  signUp: (
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string
+  ) => void;
   logout: () => void;
 }
 
@@ -42,42 +48,47 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, [location.pathname]);
 
   useEffect(() => {
-    // usersApi.getCurrentUser()
-    //     .then((user) => setUser(user))
-    //     .catch((_error) => { })
-    //     .finally(() => setLoadingInitial(false));
+    agent.Account.current()
+      .then((user: any) => {
+        setUser(user);
+      })
+      .catch((_error) => {
+        setError(_error);
+      })
+      .finally(() => setLoadingInitial(false));
   }, []);
 
   function login(email: string, password: string) {
     setLoading(true);
 
-    // sessionsApi.login({ email, password })
-    //     .then((user) => {
-    //         setUser(user);
-    //         history.push("/");
-    //     })
-    //     .catch((error) => setError(error))
-    //     .finally(() => setLoading(false));
+    agent.Account.login({ email, password })
+      .then((user: any) => {
+        setUser(user);
+        history("/");
+      })
+      .catch((error) => setError(error))
+      .finally(() => setLoading(false));
   }
 
-  // Sends sign up details to the server. On success we just apply
-  // the created user to the state.
-  function signUp(email: string, name: string, password: string) {
+  function signUp(
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string
+  ) {
     setLoading(true);
 
-    // usersApi.signUp({ email, name, password })
-    //     .then((user) => {
-    //         setUser(user);
-    //         history.push("/");
-    //     })
-    //     .catch((error) => setError(error))
-    //     .finally(() => setLoading(false));
+    agent.Account.register({ firstName, lastName, email, password })
+      .then((user: any) => {
+        setUser(user);
+        history("/");
+      })
+      .catch((error) => setError(error))
+      .finally(() => setLoading(false));
   }
 
-  // Call the logout endpoint and then remove the user
-  // from the state.
   function logout() {
-    //sessionsApi.logout().then(() => setUser(undefined));
+    localStorage.clear();
   }
 
   const memoedValue = useMemo(
@@ -91,10 +102,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }),
     [user, loading, error]
   );
+
+  return (
+    <AuthContext.Provider value={{ ...memoedValue }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
-// Let's only export the `useAuth` hook instead of the context.
-// We only want to use the hook directly and never the context component.
 export default function useAuth() {
   return useContext(AuthContext);
 }
