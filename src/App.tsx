@@ -6,6 +6,7 @@ import dataProvider from "@pankod/refine-simple-rest";
 import { Layout } from "./components";
 import { Common } from "./constants/common";
 import Login from "./pages/auth/Login";
+import Profile from "./pages/auth/Profile";
 import Home from "./pages/Home";
 import { axiosInstance } from "./utils/agent";
 import { authProvider } from "./utils/authProvider";
@@ -16,6 +17,13 @@ function App() {
       Layout={Layout as any}
       routerProvider={{
         ...routerProvider,
+        routes: [
+          {
+            element: <Profile />,
+            path: "profile",
+            layout: true,
+          },
+        ],
         RouterComponent: HashRouterComponent,
       }}
       dataProvider={dataProvider(Common.API_URL, axiosInstance)}

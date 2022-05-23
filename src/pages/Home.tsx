@@ -1,6 +1,4 @@
-import React from "react";
 import { createStyles, Container, Text, Button, Group } from "@mantine/core";
-
 const BREAKPOINT = "@media (max-width: 755px)";
 
 const useStyles = createStyles((theme) => ({
@@ -91,16 +89,17 @@ function Home() {
         <h1 className={classes.title}>
           A{" "}
           <Text
-            component='span'
-            variant='gradient'
+            component="span"
+            variant="gradient"
             gradient={{ from: "blue", to: "cyan" }}
-            inherit>
+            inherit
+          >
             fully featured
           </Text>{" "}
           React components and hooks library
         </h1>
 
-        <Text className={classes.description} color='dimmed'>
+        <Text className={classes.description} color="dimmed">
           Build fully functional accessible web applications with ease – Mantine
           includes more than 100 customizable components and hooks to cover you
           in any situation
@@ -108,10 +107,11 @@ function Home() {
 
         <Group className={classes.controls}>
           <Button
-            size='xl'
+            size="xl"
             className={classes.control}
-            variant='gradient'
-            gradient={{ from: "blue", to: "cyan" }}>
+            variant="gradient"
+            gradient={{ from: "blue", to: "cyan" }}
+          >
             Get started
           </Button>
         </Group>
