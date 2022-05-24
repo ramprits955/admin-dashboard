@@ -29,7 +29,7 @@ function App() {
       dataProvider={dataProvider(Common.API_URL, axiosInstance)}
       authProvider={authProvider(axiosInstance)}
       DashboardPage={Home}
-      resources={[{ name: "settings" }]}
+      resources={[{ name: "home" }]}
       LoginPage={Login}
     />
   );

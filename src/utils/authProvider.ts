@@ -1,6 +1,6 @@
 import { AuthProvider } from "@pankod/refine-core";
 
-import axios, { AxiosInstance } from "axios";
+import { AxiosInstance } from "axios";
 import { Common } from "../constants/common";
 import agent from "./agent";
 
@@ -35,9 +35,7 @@ export const authProvider = (axiosInstance: AxiosInstance): AuthProvider => {
       if (!token) {
         return Promise.reject();
       }
-
       const userInfo = await agent.Account.current();
-      console.log(userInfo);
       return Promise.resolve(userInfo);
     },
   };
